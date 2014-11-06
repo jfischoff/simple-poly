@@ -1,0 +1,48 @@
+Preface
+
+Specification
+    Syntax
+        Concrete Syntax
+        Abstract Syntax
+        
+    Statics
+        Type Inference
+        Extensions
+        Core 
+        
+    Dynamics
+        Reduction as Evaluation
+        Modes of evaluation
+        seq
+        
+
+Implementation
+    Overview
+        Design Decisions
+            Parsing Choices
+            Dealing with alpha equivalence
+            
+    Parser
+    Type Checker
+    Evaluator
+    STG conversion
+    Assembly Generation
+    
+GHC 
+    Overview
+        Compare and Contrast to the our implementation
+    Parser
+        Happy and Alex
+    Type Checker
+        OutsideIn
+        Equality Constraints
+    Evaluation
+        Ghci and Hint under the hood
+    STG conversion
+        
+    Assembly Generation
+        LLVM and the NCG
+    
+Use Cases
+    A faster JSON Library
+    HTTP using typeclasses
