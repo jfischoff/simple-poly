@@ -73,7 +73,6 @@ newVar = do
    i <- inc
    return . TVar . Ident $ "a" ++ show i
 
--- I need to implement capture avoiding subsitution
 infer :: Expr -> Either TypeError Type
 infer = runEnv . infer'
 
