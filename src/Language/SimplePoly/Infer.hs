@@ -46,7 +46,7 @@ runEnvWithT :: (Functor m, Monad m)
            -> m (Either TypeError Type)
 runEnvWithT initial action = runErrorT $ evalStateT action initial 
 
-extendSubst u = subs <>= u
+extendSubst u = subs %= (u <>)
 
 extendVars n e = subs <>= unit n e
 
@@ -90,7 +90,7 @@ infer' = \case
         output@(TVar n)  <- newVar
         extendVars n output
         unify ftyp $ argType :-> output
-        lookupType n 
+        lookupType n
 
    Abs n e -> do
       extendVars n =<< newVar
@@ -98,6 +98,3 @@ infer' = \case
       input  <- lookupType n
       return $ input :-> output
 
---   Let n e0 e1 -> do
---      extendVars n =<< infer' e0
---      infer' e1

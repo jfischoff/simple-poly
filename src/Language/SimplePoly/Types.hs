@@ -40,18 +40,18 @@ traceMsg msg x = trace (msg ++ show x) x
 bnfc [lbnf|
    antiquote "[" ":" ":]" ;
 
--- Lambda Abstraction. \x -> x
-Abs. Expr ::= "\\" Ident "->" Expr1              ;
 -- Application. f x
+Abs. Expr ::= "\\" Ident "->" Expr              ;
 Ap.  Expr1 ::= Expr1 Expr2                       ;
+-- Lambda Abstraction. \x -> x
 -- Let variable binding. let x = f x in f x
 -- Let. Expr2 ::= "let" Ident "=" Expr2 "in" Expr3  ;
 -- Variable. x
-Var. Expr3 ::= Ident                             ;
+Var. Expr2 ::= Ident                             ;
 -- Integer literals. 1
-Lit. Expr3 ::= Integer                           ;
+Lit. Expr2 ::= Integer                           ;
 
-coercions Expr 3; 
+coercions Expr 2; 
 
 entrypoints Expr;
 
@@ -61,6 +61,9 @@ instance IsString Ident where
    fromString = Ident
 
 type Sym = Ident
+
+class Pretty a where
+  ppr :: a -> String
 
 -- The Type Sort
 data Type 
@@ -73,6 +76,14 @@ data Type
    deriving (Show, Eq)
    
 makePrisms ''Type
+
+parens x = "(" <> x <> ")"
+
+instance Pretty Type where
+  ppr = \case
+    x :-> y -> parens (ppr x) <> "->" <> parens (ppr y)
+    TVar (Ident sym) -> sym
+    TInt -> "Int"
    
 data AnnotatedExpr a 
    = AEAbs a Sym (AnnotatedExpr a)
